@@ -8,6 +8,7 @@ import { AppContactNavComponent } from './app-contact-nav.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeModule } from './home/home.module';
 import { ContactModule } from './contact/contact.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ContactModule } from './contact/contact.module';
     HttpModule,
     AppRoutingModule,
     HomeModule,
-    ContactModule
+    ContactModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
