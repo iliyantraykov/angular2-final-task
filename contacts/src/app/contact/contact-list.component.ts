@@ -11,11 +11,12 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
     <div>
       <ul>
         <li *ngFor="let contact of contacts" [class.selected]="contact.id === selectedId"  
-          (click)="selectItem(contact)" [title]="contact.name">
-          <span>{{contact.id}}</span> {{contact.name}} {{contact.family}}
+           [title]="contact.name">
+          <span (click)="selectItem(contact)">{{contact.id}} {{contact.name}} {{contact.family}}</span>
           <span (click)="deleteItem(contact.id); $event.stopPropagation()" title="Click to delete this contact.">X</span>
         </li>
       </ul>
+      <button (click)="addItem()">Add Contact</button>
     </div>
   `,
 })
@@ -40,7 +41,13 @@ export class ContactListComponent implements OnInit{
         .then(isSucces => this.router.navigate(['/contact', contact.id]));
     }
 
-  //public deleteItem(itemId: number) {
-  //  this.service.deleteContact(itemId);
- // }
+    public addItem(){
+      this.selectedId = 0;
+      this.router.navigate(['.'], { replaceUrl: true })
+        .then(isSucces => this.router.navigate(['/contact']));
+    }
+
+    public deleteItem(itemId: number) {
+      this.service.deleteContact(itemId);
+  }
 }
