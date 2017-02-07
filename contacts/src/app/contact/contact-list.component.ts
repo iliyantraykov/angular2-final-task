@@ -48,6 +48,10 @@ export class ContactListComponent implements OnInit{
     }
 
     public deleteItem(itemId: number) {
-      this.service.deleteContact(itemId);
+      this.service.deleteContact(itemId).then(() => {
+        this.service.getContacts().then(contacts =>{
+          this.contacts = contacts;
+        });
+     });;
   }
 }

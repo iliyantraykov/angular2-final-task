@@ -19,9 +19,9 @@ import { SharedModule } from './shared/shared.module';
     FormsModule,
     HttpModule,
     AppRoutingModule,
+    SharedModule,
     HomeModule,
-    ContactModule,
-    SharedModule
+    ContactModule
   ],
   providers: [],
   bootstrap: [AppComponent]

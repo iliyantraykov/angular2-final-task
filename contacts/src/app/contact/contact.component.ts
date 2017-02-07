@@ -3,6 +3,7 @@ import { FormsModule , NgForm} from '@angular/forms';
 import { Contact, Gender } from './contact.model';
 import { Router, ActivatedRoute, Params, NavigationExtras } from '@angular/router';
 import { BackendService } from './../shared/backend.service'; 
+import { ContactService } from './../contact/contact.service'; 
 import {Location} from '@angular/common';
 
 @Component({
@@ -40,7 +41,7 @@ export class ContactComponent implements OnInit{
 
   public constructor( private route: ActivatedRoute,
     private router: Router,
-    private service:BackendService,
+    private service: ContactService,
     private location : Location){}
 
   public ngOnInit(){
@@ -49,11 +50,10 @@ export class ContactComponent implements OnInit{
       if (id) {
 
         this.isNewContact = false; // has Id => not new
-        this.service.getAll().then(contacts=> 
-        { 
-          let filtered = contacts.filter(el=> {return el.id == id;});
-          this.contact  = filtered[0];
-        });
+        this.service.getContact(id).then(
+          contact => {
+            this.contact = contact;
+          });
 
       }else{
         this.isNewContact = true;
@@ -64,17 +64,24 @@ export class ContactComponent implements OnInit{
   public onSubmit(form : NgForm){
       this.contact = form.form.getRawValue() as Contact;
       if (this.isNewContact) {
-      this.service.addContact(this.contact);
-      this.goBack();
-    } else {
-      this.service.editContact(this.contact);
-      this.goBack();
-    }
+        this.service.addContact(this.contact).then(contact => {
+          this.contact = contact;
+          this.gotoContacts();
+        });
+      } else {
+        this.service.editContact(this.contact).then(contact => {
+          this.contact = contact;
+          this.goBack();
+        });
+      }
   }
 
   public goBack() {
     this.location.back();
-    
+  }
+
+   public gotoContacts() {
+    this.router.navigate(['/contacts', {selectedId: this.contact.id}]);
   }
 
   public resetForm(cForm : NgForm) {
